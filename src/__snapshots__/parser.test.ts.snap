@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parses -(1 + -2) * -1 1`] = `
+{
+  "args": [
+    {
+      "arg": {
+        "args": [
+          {
+            "depends": [],
+            "parsed": 1,
+            "type": "number",
+            "value": "1",
+          },
+          {
+            "arg": {
+              "depends": [],
+              "parsed": 2,
+              "type": "number",
+              "value": "2",
+            },
+            "depends": [],
+            "type": "neg",
+          },
+        ],
+        "depends": [],
+        "type": "+",
+      },
+      "depends": [],
+      "type": "neg",
+    },
+    {
+      "arg": {
+        "depends": [],
+        "parsed": 1,
+        "type": "number",
+        "value": "1",
+      },
+      "depends": [],
+      "type": "neg",
+    },
+  ],
+  "depends": [],
+  "type": "*",
+}
+`;
+
+exports[`parses 1 / x * 3 1`] = `
+{
+  "args": [
+    {
+      "args": [
+        {
+          "depends": [],
+          "parsed": 1,
+          "type": "number",
+          "value": "1",
+        },
+        {
+          "depends": [],
+          "type": "variable",
+          "value": "x",
+        },
+      ],
+      "depends": [],
+      "type": "/",
+    },
+    {
+      "depends": [],
+      "parsed": 3,
+      "type": "number",
+      "value": "3",
+    },
+  ],
+  "depends": [],
+  "type": "*",
+}
+`;

@@ -1,0 +1,294 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`derives exp e^(2 * x) 1`] = `
+{
+  "args": [
+    {
+      "arg": {
+        "args": [
+          {
+            "depends": [],
+            "parsed": 2,
+            "type": "number",
+            "value": "2",
+          },
+          {
+            "depends": [
+              "x",
+            ],
+            "type": "variable",
+            "value": "x",
+          },
+        ],
+        "depends": [
+          "x",
+        ],
+        "type": "*",
+      },
+      "depends": [
+        "x",
+      ],
+      "type": "exp",
+    },
+    {
+      "depends": [],
+      "parsed": 2,
+      "type": "number",
+      "value": "2",
+    },
+  ],
+  "depends": [
+    "x",
+  ],
+  "type": "*",
+}
+`;
+
+exports[`derives logarithms ln(x) 1`] = `
+{
+  "args": [
+    {
+      "depends": [],
+      "parsed": 1,
+      "type": "number",
+      "value": "1",
+    },
+    {
+      "depends": [
+        "x",
+      ],
+      "type": "variable",
+      "value": "x",
+    },
+  ],
+  "depends": [
+    "x",
+  ],
+  "type": "/",
+}
+`;
+
+exports[`derives power rule (x + 8)^5 1`] = `
+{
+  "args": [
+    {
+      "depends": [],
+      "parsed": 5,
+      "type": "number",
+      "value": "5",
+    },
+    {
+      "args": [
+        {
+          "args": [
+            {
+              "depends": [
+                "x",
+              ],
+              "type": "variable",
+              "value": "x",
+            },
+            {
+              "depends": [],
+              "parsed": 8,
+              "type": "number",
+              "value": "8",
+            },
+          ],
+          "depends": [
+            "x",
+          ],
+          "type": "+",
+        },
+        {
+          "depends": [],
+          "parsed": 4,
+          "type": "number",
+          "value": "4",
+        },
+      ],
+      "depends": [
+        "x",
+      ],
+      "type": "^",
+    },
+  ],
+  "depends": [
+    "x",
+  ],
+  "type": "*",
+}
+`;
+
+exports[`derives power rule x^(sin(2) - pi) 1`] = `
+{
+  "args": [
+    {
+      "args": [
+        {
+          "arg": {
+            "depends": [],
+            "parsed": 2,
+            "type": "number",
+            "value": "2",
+          },
+          "depends": [],
+          "type": "sin",
+        },
+        {
+          "depends": [],
+          "type": "constant",
+          "value": "pi",
+        },
+      ],
+      "depends": [],
+      "type": "-",
+    },
+    {
+      "args": [
+        {
+          "depends": [
+            "x",
+          ],
+          "type": "variable",
+          "value": "x",
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "arg": {
+                    "depends": [],
+                    "parsed": 2,
+                    "type": "number",
+                    "value": "2",
+                  },
+                  "depends": [],
+                  "type": "sin",
+                },
+                {
+                  "depends": [],
+                  "type": "constant",
+                  "value": "pi",
+                },
+              ],
+              "depends": [],
+              "type": "-",
+            },
+            {
+              "depends": [],
+              "parsed": 1,
+              "type": "number",
+              "value": "1",
+            },
+          ],
+          "depends": [],
+          "type": "-",
+        },
+      ],
+      "depends": [
+        "x",
+      ],
+      "type": "^",
+    },
+  ],
+  "depends": [
+    "x",
+  ],
+  "type": "*",
+}
+`;
+
+exports[`derives power rule x^2 1`] = `
+{
+  "args": [
+    {
+      "depends": [],
+      "parsed": 2,
+      "type": "number",
+      "value": "2",
+    },
+    {
+      "depends": [
+        "x",
+      ],
+      "type": "variable",
+      "value": "x",
+    },
+  ],
+  "depends": [
+    "x",
+  ],
+  "type": "*",
+}
+`;
+
+exports[`derives trig -cos(x) 1`] = `
+{
+  "arg": {
+    "depends": [
+      "x",
+    ],
+    "type": "variable",
+    "value": "x",
+  },
+  "depends": [
+    "x",
+  ],
+  "type": "sin",
+}
+`;
+
+exports[`derives trig ln(sin(x)) 1`] = `
+{
+  "args": [
+    {
+      "arg": {
+        "depends": [
+          "x",
+        ],
+        "type": "variable",
+        "value": "x",
+      },
+      "depends": [
+        "x",
+      ],
+      "type": "cos",
+    },
+    {
+      "arg": {
+        "depends": [
+          "x",
+        ],
+        "type": "variable",
+        "value": "x",
+      },
+      "depends": [
+        "x",
+      ],
+      "type": "sin",
+    },
+  ],
+  "depends": [
+    "x",
+  ],
+  "type": "/",
+}
+`;
+
+exports[`derives trig sin(x) 1`] = `
+{
+  "arg": {
+    "depends": [
+      "x",
+    ],
+    "type": "variable",
+    "value": "x",
+  },
+  "depends": [
+    "x",
+  ],
+  "type": "cos",
+}
+`;
