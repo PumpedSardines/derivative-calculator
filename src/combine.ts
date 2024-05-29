@@ -38,7 +38,7 @@ function recursiveCombine(node: Node, previous: Node | null): string {
     return `-${recursiveCombine(node.arg, node)}`;
   }
 
-  throw new Error("Unsuported node type");
+  throw new Error("Unsupported node type");
 }
 
 function handelElementaryOperator(
@@ -79,7 +79,7 @@ function compareOperators(a: string, b: string): number {
   const right = b as keyof typeof precedence;
 
   if (!(left in precedence) || !(right in precedence)) {
-    throw new Error("Unsuported operator");
+    throw new Error("Unsupported operator");
   }
 
   return precedence[left] - precedence[right];
