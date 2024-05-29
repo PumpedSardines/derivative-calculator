@@ -40,14 +40,31 @@ export type Node =
 
 type NodeToken = { node: Node } | { token: Token };
 
+/**
+ * Parses a token array into a basic node tree.
+ * The node tree is not optimized and doesn't have any depends added
+ */
 export function parse(tokens: Token[]): Node {
+  // The idea is to first evaluate the token array in stages where some parts can be evaluated first while the rest are still tokens.
+  // We can then have a combined node / token array
+  // Example of the process
+  // (3 + 4) * 5 -> [{Node}, +, 5]
+  // Since addition doesn't care about what it's adding it doesn't matter if the two sides are of different types
+
+  // Evaluate parentheses into nodes
   let tokenNodes = evalParentheses(tokens);
+  // Find all function calls and evaluate them, aka [sin {Node / token}] -> [sin({Node})]
   tokenNodes = parseFunctionOperations(tokenNodes);
+  // Parse the token array into a node tree
   let nodes = parseTokenNodeArray(structuredClone(tokenNodes));
-  nodes = recursivePass(nodes);
+  // Combine e^x into exp(x)
+  nodes = recursiveCombinePowEToExp(nodes);
   return nodes;
 }
 
+/**
+ * Finds parentheses and evaluates them first and then combines them into a shared node and token array
+ */
 function evalParentheses(tokens: Token[]): NodeToken[] {
   const tokenNodes: NodeToken[] = structuredClone(tokens).map((t) => ({
     token: t,
@@ -94,13 +111,16 @@ function evalParentheses(tokens: Token[]): NodeToken[] {
   return tokenNodes;
 }
 
-function recursivePass(node: Node): Node {
+/**
+ * Recursively combines e^x to exp(x)
+ */
+function recursiveCombinePowEToExp(node: Node): Node {
   if (
     node.type === "^" &&
     node.args[0].type === "constant" &&
     node.args[0].value === "e"
   ) {
-    return recursivePass({
+    return recursiveCombinePowEToExp({
       type: "exp",
       arg: node.args[1],
       depends: [],
@@ -108,14 +128,14 @@ function recursivePass(node: Node): Node {
   }
 
   if ("args" in node) {
-    const args = node.args.map(recursivePass) as [Node, Node];
+    const args = node.args.map(recursiveCombinePowEToExp) as [Node, Node];
     return {
       type: node.type,
       args,
       depends: [],
     };
   } else if ("arg" in node) {
-    const arg = recursivePass(node.arg);
+    const arg = recursiveCombinePowEToExp(node.arg);
     return {
       type: node.type,
       arg,
@@ -126,6 +146,9 @@ function recursivePass(node: Node): Node {
   return node;
 }
 
+/**
+ * Finds all function calls and evaluates them
+ */
 function parseFunctionOperations(nodeTokens: NodeToken[]): NodeToken[] {
   nodeTokens = structuredClone(nodeTokens);
 
@@ -153,6 +176,9 @@ function parseFunctionOperations(nodeTokens: NodeToken[]): NodeToken[] {
   return nodeTokens;
 }
 
+/**
+ * Final parsing of the token array into a node tree
+ */
 function parseTokenNodeArray(nodeTokens: NodeToken[]): Node {
   nodeTokens = structuredClone(nodeTokens);
 
