@@ -1,50 +1,13 @@
-import { functionOperators, type Constant, type Token } from "./lexer";
+import { functionOperators } from "../consts";
+import type { LexerToken, Node } from "../types";
 
-export type Node =
-  | {
-      type: "+" | "-" | "*" | "/" | "^";
-      args: [Node, Node];
-      depends: string[];
-    }
-  | {
-      type:
-        | "cos"
-        | "sin"
-        | "tan"
-        | "ln"
-        | "sqrt"
-        | "exp"
-        | "arcsin"
-        | "arccos"
-        | "arctan"
-        | "neg";
-      arg: Node;
-      depends: string[];
-    }
-  | {
-      type: "variable";
-      value: string;
-      depends: string[];
-    }
-  | {
-      type: "constant";
-      value: Constant;
-      depends: string[];
-    }
-  | {
-      type: "number";
-      value: string;
-      parsed: number;
-      depends: string[];
-    };
-
-type NodeToken = { node: Node } | { token: Token };
+type NodeToken = { node: Node } | { token: LexerToken };
 
 /**
  * Parses a token array into a basic node tree.
  * The node tree is not optimized and doesn't have any depends added
  */
-export function parse(tokens: Token[]): Node {
+export function parse(tokens: LexerToken[]): Node {
   // The idea is to first evaluate the token array in stages where some parts can be evaluated first while the rest are still tokens.
   // We can then have a combined node / token array
   // Example of the process
@@ -65,7 +28,7 @@ export function parse(tokens: Token[]): Node {
 /**
  * Finds parentheses and evaluates them first and then combines them into a shared node and token array
  */
-function evalParentheses(tokens: Token[]): NodeToken[] {
+function evalParentheses(tokens: LexerToken[]): NodeToken[] {
   const tokenNodes: NodeToken[] = structuredClone(tokens).map((t) => ({
     token: t,
   }));
@@ -245,7 +208,7 @@ function parseTokenNodeArray(nodeTokens: NodeToken[]): Node {
         return;
       })();
 
-      if (value) return value;
+      if (value) return value as Node;
     }
 
     for (let i = nodeTokens.length - 1; i >= 1; i--) {
@@ -277,7 +240,7 @@ function parseTokenNodeArray(nodeTokens: NodeToken[]): Node {
             parseTokenNodeArray(nodeTokens.slice(0, i)),
             parseTokenNodeArray(nodeTokens.slice(i + 1)),
           ],
-        };
+        } as Node;
       }
     }
   }

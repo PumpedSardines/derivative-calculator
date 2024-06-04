@@ -1,4 +1,8 @@
-import type { Node } from "./parser.ts";
+import type { Node } from "../types";
+import { evalAddition } from "./operators/add";
+import { evalDivision } from "./operators/div";
+import { evalMultiplication } from "./operators/mul";
+import { evalSubtraction } from "./operators/sub";
 
 export function evaluate(node: Node): Node {
   let result = recursiveEvaluate(node);
@@ -67,108 +71,16 @@ function reconstructNegative(node: Node): Node {
   return node;
 }
 
-function recursiveEvaluate(node: Node): Node {
+export function recursiveEvaluate(node: Node): Node {
   switch (node.type) {
-    case "+": {
-      const left = recursiveEvaluate(node.args[0]);
-      const right = recursiveEvaluate(node.args[1]);
-
-      if (nodeNumberEq(left, 0)) {
-        return right;
-      }
-      if (nodeNumberEq(right, 0)) {
-        return left;
-      }
-
-      return evalArgsOperator(node, (a, b) => a + b);
-    }
-    case "-": {
-      const left = recursiveEvaluate(node.args[0]);
-      const right = recursiveEvaluate(node.args[1]);
-
-      if (right.type === "neg") {
-        return evaluate({
-          type: "+",
-          depends: [],
-          args: [left, right.arg],
-        });
-      }
-
-      if (right.type === "number" && right.parsed < 0) {
-        return evaluate({
-          type: "+",
-          depends: [],
-          args: [
-            left,
-            {
-              type: "neg",
-              depends: [],
-              arg: right,
-            },
-          ],
-        });
-      }
-
-      return evalArgsOperator(node, (a, b) => a - b);
-    }
-    case "*": {
-      const left = recursiveEvaluate(node.args[0]);
-      const right = recursiveEvaluate(node.args[1]);
-
-      if (nodeNumberEq(left, 0) || nodeNumberEq(right, 0)) {
-        return {
-          depends: [],
-          type: "number",
-          parsed: 0,
-          value: "0",
-        };
-      }
-
-      if (nodeNumberEq(left, 1)) {
-        return right;
-      }
-      if (nodeNumberEq(right, 1)) {
-        return left;
-      }
-
-      if (left.type === "/") {
-        return evaluate({
-          type: "/",
-          depends: [],
-          args: [
-            {
-              type: "*",
-              depends: [],
-              args: [left.args[0], right],
-            },
-            left.args[1],
-          ],
-        });
-      }
-
-      if (right.type === "/") {
-        return evaluate({
-          type: "/",
-          depends: [],
-          args: [
-            {
-              type: "*",
-              depends: [],
-              args: [right.args[0], left],
-            },
-            right.args[1],
-          ],
-        });
-      }
-
-      return evalArgsOperator(node, (a, b) => a * b);
-    }
+    case "+":
+      return evalAddition(node);
+    case "-":
+      return evalSubtraction(node);
+    case "*":
+      return evalMultiplication(node);
     case "/":
-      return evalArgsOperator(node, (a, b) => {
-        if (b === 0) throw new Error("Cannot divide by zero");
-        const v = a / b;
-        return v === Math.floor(v) ? v : undefined;
-      });
+      return evalDivision(node);
     case "^": {
       const b = recursiveEvaluate(node.args[1]);
       if ("parsed" in b && b.parsed === 1) {
@@ -233,18 +145,6 @@ function recursiveEvaluate(node: Node): Node {
   }
 
   return node;
-}
-
-function nodeNumberEq<T extends number>(
-  node: Node,
-  number: T,
-): node is {
-  type: "number";
-  parsed: T;
-  value: `${T}`;
-  depends: string[];
-} {
-  return node.type === "number" && node.parsed === number;
 }
 
 function evalArgOperator(

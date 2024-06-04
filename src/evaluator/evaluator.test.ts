@@ -1,12 +1,12 @@
 import { expect, it } from "@jest/globals";
-import { tokenize } from "./lexer";
-import { parse } from "./parser";
+import { tokenize } from "../lexer/lexer";
+import { parse } from "../parser/parser";
 import { evaluate } from "./evaluator";
 
 it.each([
   ["1 + 2", { type: "number", depends: [], parsed: 3, value: "3" }],
   ["2 - 1", { type: "number", depends: [], parsed: 1, value: "1" }],
-  ["1 * 2", { type: "number", depends: [], parsed: 2, value: "2" }],
+  ["8 * 2", { type: "number", depends: [], parsed: 16, value: "16" }],
   ["6 / 2", { type: "number", depends: [], parsed: 3, value: "3" }],
   ["2 + 3 * 2", { type: "number", depends: [], parsed: 8, value: "8" }],
   ["2 ^ 3", { type: "number", depends: [], parsed: 8, value: "8" }],
@@ -284,6 +284,19 @@ it.each([
           value: "x",
         },
       ],
+    },
+  ],
+  [
+    "2 * -1",
+    {
+      type: "neg",
+      depends: [],
+      arg: {
+        type: "number",
+        depends: [],
+        value: "2",
+        parsed: 2,
+      },
     },
   ],
 ])(`evaluates %s`, (input, output) => {

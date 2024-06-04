@@ -1,7 +1,7 @@
 import { expect, it } from "@jest/globals";
 
-import { tokenize } from "./lexer";
-import { parse } from "./parser";
+import { tokenize } from "../lexer/lexer";
+import { parse } from "../parser/parser";
 
 import { combine } from "./combine";
 

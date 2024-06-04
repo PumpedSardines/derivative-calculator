@@ -1,5 +1,5 @@
-import { evaluate } from "./evaluator";
-import { Node } from "./parser";
+import { evaluate } from "../evaluator/evaluator";
+import { Node } from "../types";
 
 type DerivationOptions = {
   variable: string;

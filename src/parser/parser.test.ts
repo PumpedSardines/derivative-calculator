@@ -1,5 +1,5 @@
 import { expect, it } from "@jest/globals";
-import { tokenize } from "./lexer";
+import { tokenize } from "../lexer/lexer";
 import { parse } from "./parser";
 
 it("parses operators", () => {

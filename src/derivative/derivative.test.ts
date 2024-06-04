@@ -1,7 +1,7 @@
 import { expect, it } from "@jest/globals";
-import { tokenize } from "./lexer";
-import { parse } from "./parser";
-import { evaluate } from "./evaluator";
+import { tokenize } from "../lexer/lexer";
+import { parse } from "../parser/parser";
+import { evaluate } from "../evaluator/evaluator";
 import { derivative } from "./derivative";
 
 const compile = (input: string) => evaluate(parse(tokenize(input)));
