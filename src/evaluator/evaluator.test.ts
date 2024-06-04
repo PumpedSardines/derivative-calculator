@@ -1,7 +1,7 @@
 import { expect, it } from "@jest/globals";
 import { tokenize } from "../lexer/lexer";
 import { parse } from "../parser/parser";
-import { evaluate } from "../evaluator/evaluator";
+import { evaluate } from "./evaluator";
 
 it.each([
   ["1 + 2", { type: "number", depends: [], parsed: 3, value: "3" }],

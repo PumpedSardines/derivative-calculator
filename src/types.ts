@@ -42,8 +42,8 @@ export type ArctanNode = FunctionNode<"arctan">;
 export type ExpNode = FunctionNode<"exp">;
 export type NegNode = FunctionNode<"neg">;
 
-export type PlusNode = ElementaryOperatorNode<"+">;
-export type MinusNode = ElementaryOperatorNode<"-">;
+export type AddNode = ElementaryOperatorNode<"+">;
+export type SubNode = ElementaryOperatorNode<"-">;
 export type MulNode = ElementaryOperatorNode<"*">;
 export type DivNode = ElementaryOperatorNode<"/">;
 export type PowNode = ElementaryOperatorNode<"^">;
@@ -76,8 +76,8 @@ export type Node =
   | ArctanNode
   | ExpNode
   | NegNode
-  | PlusNode
-  | MinusNode
+  | AddNode
+  | SubNode
   | MulNode
   | DivNode
   | PowNode
