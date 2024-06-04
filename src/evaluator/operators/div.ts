@@ -1,19 +1,11 @@
 import { DivNode, Node } from "../../types";
 import { recursiveEvaluate } from "../evaluator";
 import { isEqNumber } from "../helpers/isEqNumber";
+import { ltZero } from "../helpers/ltZero";
 
 export function evalDivision(node: DivNode): Node {
   const left = recursiveEvaluate(node.args[0]);
   const right = recursiveEvaluate(node.args[1]);
-
-  if (isEqNumber(left, 0)) {
-    return {
-      type: "number",
-      depends: [],
-      parsed: 0,
-      value: "0",
-    };
-  }
 
   if (isEqNumber(right, 0)) {
     throw new Error("Cannot divide by zero");
@@ -29,6 +21,58 @@ export function evalDivision(node: DivNode): Node {
         value: `${left.parsed / right.parsed}`,
       };
     }
+  }
+
+  if (isEqNumber(left, 0)) {
+    return {
+      type: "number",
+      depends: [],
+      parsed: 0,
+      value: "0",
+    };
+  }
+
+  if (ltZero(right) && ltZero(left)) {
+    return recursiveEvaluate({
+      type: "/",
+      depends: [],
+      args: [
+        {
+          type: "neg",
+          depends: [],
+          arg: left,
+        },
+        {
+          type: "neg",
+          depends: [],
+          arg: right,
+        },
+      ],
+    });
+  }
+
+  if (ltZero(right)) {
+    return recursiveEvaluate({
+      type: "neg",
+      depends: [],
+      arg: {
+        type: "/",
+        depends: [],
+        args: [left, { type: "neg", depends: [], arg: right }],
+      },
+    });
+  }
+
+  if (ltZero(left)) {
+    return recursiveEvaluate({
+      type: "neg",
+      depends: [],
+      arg: {
+        type: "/",
+        depends: [],
+        args: [{ type: "neg", depends: [], arg: left }, right],
+      },
+    });
   }
 
   return {

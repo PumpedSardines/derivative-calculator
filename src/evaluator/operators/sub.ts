@@ -1,6 +1,7 @@
 import { SubNode, Node } from "../../types";
 import { recursiveEvaluate } from "../evaluator";
 import { isEqNumber } from "../helpers/isEqNumber";
+import { ltZero } from "../helpers/ltZero";
 
 export function evalSubtraction(node: SubNode): Node {
   const left = recursiveEvaluate(node.args[0]);
@@ -18,7 +19,7 @@ export function evalSubtraction(node: SubNode): Node {
     return left;
   }
 
-  if (right.type === "neg" || (right.type === "number" && right.parsed < 0)) {
+  if (ltZero(right)) {
     return recursiveEvaluate({
       type: "+",
       depends: [],

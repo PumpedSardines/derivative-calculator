@@ -52,3 +52,83 @@ it("combines division", () => {
     ],
   });
 });
+
+it("combines negtaion", () => {
+  const output1 = evalMultiplication({
+    type: "*",
+    depends: [],
+    args: [
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "number", depends: [], value: "4", parsed: 4 },
+      },
+      { type: "variable", depends: [], value: "x" },
+    ],
+  });
+
+  expect(output1).toMatchObject({
+    type: "neg",
+    depends: [],
+    arg: {
+      type: "*",
+      depends: [],
+      args: [
+        { type: "number", depends: [], value: "4", parsed: 4 },
+        { type: "variable", depends: [], value: "x" },
+      ],
+    },
+  });
+
+  const output2 = evalMultiplication({
+    type: "*",
+    depends: [],
+    args: [
+      { type: "number", depends: [], value: "4", parsed: 4 },
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "variable", depends: [], value: "x" },
+      },
+    ],
+  });
+
+  expect(output2).toMatchObject({
+    type: "neg",
+    depends: [],
+    arg: {
+      type: "*",
+      depends: [],
+      args: [
+        { type: "number", depends: [], value: "4", parsed: 4 },
+        { type: "variable", depends: [], value: "x" },
+      ],
+    },
+  });
+
+  const output3 = evalMultiplication({
+    type: "*",
+    depends: [],
+    args: [
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "number", depends: [], value: "4", parsed: 4 },
+      },
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "variable", depends: [], value: "x" },
+      },
+    ],
+  });
+
+  expect(output3).toMatchObject({
+    type: "*",
+    depends: [],
+    args: [
+      { type: "number", depends: [], value: "4", parsed: 4 },
+      { type: "variable", depends: [], value: "x" },
+    ],
+  });
+});

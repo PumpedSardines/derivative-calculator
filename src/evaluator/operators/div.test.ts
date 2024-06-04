@@ -71,6 +71,86 @@ it("prunes zeros", () => {
   });
 });
 
+it("combines negtaion", () => {
+  const output1 = evalDivision({
+    type: "/",
+    depends: [],
+    args: [
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "number", depends: [], value: "4", parsed: 4 },
+      },
+      { type: "variable", depends: [], value: "x" },
+    ],
+  });
+
+  expect(output1).toMatchObject({
+    type: "neg",
+    depends: [],
+    arg: {
+      type: "/",
+      depends: [],
+      args: [
+        { type: "number", depends: [], value: "4", parsed: 4 },
+        { type: "variable", depends: [], value: "x" },
+      ],
+    },
+  });
+
+  const output2 = evalDivision({
+    type: "/",
+    depends: [],
+    args: [
+      { type: "number", depends: [], value: "4", parsed: 4 },
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "variable", depends: [], value: "x" },
+      },
+    ],
+  });
+
+  expect(output2).toMatchObject({
+    type: "neg",
+    depends: [],
+    arg: {
+      type: "/",
+      depends: [],
+      args: [
+        { type: "number", depends: [], value: "4", parsed: 4 },
+        { type: "variable", depends: [], value: "x" },
+      ],
+    },
+  });
+
+  const output3 = evalDivision({
+    type: "/",
+    depends: [],
+    args: [
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "number", depends: [], value: "4", parsed: 4 },
+      },
+      {
+        type: "neg",
+        depends: [],
+        arg: { type: "variable", depends: [], value: "x" },
+      },
+    ],
+  });
+
+  expect(output3).toMatchObject({
+    type: "/",
+    depends: [],
+    args: [
+      { type: "number", depends: [], value: "4", parsed: 4 },
+      { type: "variable", depends: [], value: "x" },
+    ],
+  });
+});
+
 it("ignores dividing when result is a fraction", () => {
   const output = evalDivision({
     type: "/",
