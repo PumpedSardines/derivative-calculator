@@ -1,5 +1,5 @@
-import { elementaryOperators, functionOperators } from "./lexer";
-import { Node } from "./parser";
+import { elementaryOperators, functionOperators } from "../consts";
+import { Node } from "../types";
 
 export function combine(node: Node): string {
   return recursiveCombine(node, null);

@@ -1,4 +1,4 @@
-import type { Node } from "./parser.ts";
+import type { Node } from "../types";
 
 export function evaluate(node: Node): Node {
   let result = recursiveEvaluate(node);

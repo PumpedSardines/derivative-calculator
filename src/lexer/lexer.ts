@@ -1,35 +1,7 @@
-export const elementaryOperators = ["^", "*", "/", "+", "-"] as const;
-export const functionOperators = [
-  "sin",
-  "cos",
-  "tan",
-  "ln",
-  "arcsin",
-  "arccos",
-  "arctan",
-  "sqrt",
-] as const;
-const constants = ["pi", "e"] as const;
-
-export type Operator =
-  | (typeof elementaryOperators)[number]
-  | (typeof functionOperators)[number];
-export type Constant = (typeof constants)[number];
+import { constants, elementaryOperators, functionOperators } from "../consts";
+import { Constant, LexerToken, Operator } from "../types";
 
 type ParsingType = "none" | "operator" | "number" | "variable";
-
-export type Token =
-  | { type: Operator }
-  | { type: "(" | ")" }
-  | {
-    type: "variable";
-    value: string;
-  }
-  | {
-    type: "constant";
-    value: Constant;
-  }
-  | { type: "number"; value: string; parsed: number };
 
 /**
  * Tokenizes the input string into an array of mathematical tokens.
@@ -38,8 +10,8 @@ export type Token =
  * @returns An array of tokens.
  * @throws If the input contains invalid characters.
  */
-export function tokenize(input: string): Token[] {
-  const tokens: Token[] = [];
+export function tokenize(input: string): LexerToken[] {
+  const tokens: LexerToken[] = [];
 
   let parsingType: ParsingType = "none";
   let currentValue = "";
